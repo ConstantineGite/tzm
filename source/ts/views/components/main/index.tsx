@@ -1,53 +1,38 @@
 import * as React from "react";
-import { toggle } from "../../../controller/toggle";
+import { toggle, Greeter } from "../../../controller/toggle";
+import { Midle } from "../midle";
 
-interface IState {
-	page: "playList" | "donation" | "comments";
-	data?: object[] | null;
-}
+	interface IState {
+		page: "playList" | "donation" | "comments";
+	}
 
 export class Main extends React.Component<{}, IState> {
 	public state: IState = {
-		page: "playList",
-		data: null
-	}
+		page: "playList"
+	};
+
+    public click(newPage){
+ 		this.setState({page: newPage})
+    }
 
 	public render(): JSX.Element {
 		return (
-			<main>
-				{
-					this.contentFliper()
-				}
-			</main>
+			<div>
+				<header>
+					<div onClick={e => this.click("playList")} key="playList" className="playList">playList</div>
+					<div onClick={e => this.click("donation")} key="donation" className="donation">donation</div>
+					<div onClick={e => this.click("comments")} key="comments" className="comments">comments</div>
+				</header>
+				<Midle page={this.state.page}/>
+			</div>
 		);
 	}
 
-	public componentWillMount(): void {
-		fetch("https://itunes.apple.com/us/rss/topalbums/limit=100/json")
-		.then((data) => data.json()).then((data) => { this.setState({data: data.feed.entry}) })
-		.catch((err: Error) => err)
+	public componentDidMount(): void {
+		//this.isMount = true;
 	}
 
-		// public componentWillUnmount(): void {
-		// }
-
-	public contentFliper(): JSX.Element {
-		 const {data} = this.state;
-		 let list;
-		 if(data)
-		 	list = data.map((num) => {
-				 console.log(num)
-				//return(<div key="awda"> adawd </div>)
-			});
-		return (
-		  <ul>
-		{list}
-		  </ul>
-		);
+	public componentWillUnmount(): void {
+		//this.isMount = false;
 	}
-
-	// private langs(): void {
-	// 	// const lang = this.state.lang === "en" ? "ua" : "en";
-	// 	// this.setState({ lang });
-	// }
 }
