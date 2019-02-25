@@ -1,22 +1,23 @@
 import * as React from "react";
+import { Comments } from "../main/comments";
 import { emitter } from "../../../controller/toggle";
 
 interface IState {
 	page: string;
-	data?: object[] | null;
+    data?: object[] | null;
 }
 
 export class Main extends React.Component<{}, IState> {
 	public state: IState = {
 		page: "playList",
-		data: null
+        data: null
 	}
 
-	public render(): JSX.Element {
+    public render(): JSX.Element {
 		return (
 			<main>
 				{this.changePage()}
-				{this.commentsList()}
+				<Comments typePage={this.state.page} />
 			</main>
 		);
 	}
